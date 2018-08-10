@@ -8,3 +8,32 @@ BIBLE_DICT = {'Genesis':1,'Exodus':2,'Leviticus':3,'Numbers':4,'Deuteronomy':5,'
               'Corinthians':'check46','Galatians':48,'Ephesians':49,'Philippians':50,'Colossians':51,'Thessalonians':'check52',
               'Timothy':'check54','Titus':56,'Philemon':57,'Hebrews':58,'James':59,'Peter':'check60','Jude':65,'Revelation':66}
               
+def listWords(textIn):
+    key = "Home Church Questions"
+    page1 = textIn.split(key)
+    page1 = page1[0]
+    wordList = []
+    beg = 0
+    pos = 0
+    while pos < len(page1):
+        if ord(page1[pos]) > 122 or ord(page1[pos]) < 44 or ord(page1[pos])==46:
+            wordList.append(page1[beg:pos])
+            beg = pos+1
+        pos = pos+1
+    return wordList
+
+def listBiblePassages(wordListIn):
+    bibleVerses = []
+    for i in range(0,len(wordListIn)):
+        check = BIBLE_DICT.get(wordListIn[i])
+        if check != None:
+            if isinstance(check, int):
+                bibleVerses.append('{0} {1}'.format(wordListIn[i],wordListIn[i+1]))
+    return bibleVerses
+   
+    
+
+text = textract.process("2018-01-28-1112-notes.pdf")
+words = listWords(text)
+BP = listBiblePassages(words)      
+print(BP)
